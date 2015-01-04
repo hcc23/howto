@@ -19,7 +19,7 @@ Certtificate Creation
 
 Now on to the actual creation:
 
-1. Create a new folder to keep your files organized:
+- Create a new folder to keep your files organized:
 
 ```
 :~> mkdir myNewKey
@@ -27,7 +27,7 @@ Now on to the actual creation:
 :~/myNewKey> 
 ```
 
-2. Generate a 4096 bit long RSA key, encrypt it with AES, and store it in a
+- Generate a 4096 bit long RSA key, encrypt it with AES, and store it in a
 PEM formatted file:
 
 ```
@@ -37,7 +37,7 @@ Verifying - Enter PEM pass phrase:
 :~/myNewKey> 
 ```
 
-3. Generate a Certificate Signature Request (CSR):
+- Generate a Certificate Signature Request (CSR):
 
 ```
 :~/myNewKey> openssl req -new -inform PEM -key private_key.pem -outform PEM -out csr.pem
@@ -64,7 +64,7 @@ An optional company name []:
 :~/myNewKey> 
 ```
     
-4. Open the newly created csr.pem in a texteditor or display it in the console:
+- Open the newly created csr.pem in a texteditor or display it in the console:
 
 ```
 :~/myNewKey> cat csr.pem
@@ -76,27 +76,27 @@ An optional company name []:
 
 The next couple of steps happen on the CAcert website (https://www.cacert.org/index.php?id=4).
     
-5. Log on to CAcert and go to 'Client Certificates'->'New' (https://www.cacert.org/account.php?id=3)
+- Log on to CAcert and go to 'Client Certificates'->'New' (https://www.cacert.org/account.php?id=3)
 
-6. Select the email address you enterd in step 3 above and check that the name
+- Select the email address you enterd in step 3 above and check that the name
 also matches.[1]
 
-7. Check the 'Show Advanced Options' box and copy-paste your CSR into the text 
+- Check the 'Show Advanced Options' box and copy-paste your CSR into the text 
 field. (Note: the lines with 'BEGIN CERTIFICATE REQUEST' and 'END CERTIFICATE REQUEST'
 are part of the request and need to be copy-pasted as well!)
 
-8. Check 'I accept the CAcert Community Agreement (CCA)' box and click 'Next'
+- Check 'I accept the CAcert Community Agreement (CCA)' box and click 'Next'
 
 After a while the website will show you your certificate (again a lot of ASCII 
 gibberish enclosed in some 'BEGIN CERTIFICATE' and 'END CERTIFICATE' lines).
 
-9. Click 'Download certificate in PEM format' and store the key in your folder.
+- Click 'Download certificate in PEM format' and store the key in your folder.
 
 In order to keep track of certificates, etc., rename your key folder and the 
 certificate to the serial number of the certificate (shown on the website below 
 the actual certificate information; for this example, let's use '0123AB')
 
-10. Renaming the certificate and the folder:
+- Renaming the certificate and the folder:
 
 ```
 :~/myNewKey> mv your.email@address.com.crt 0123AB.crt
@@ -105,11 +105,11 @@ the actual certificate information; for this example, let's use '0123AB')
 :~>
 ```
 
-11. Download and store the CAcert class 1 and class 3 root certificates in your 
+- Download and store the CAcert class 1 and class 3 root certificates in your 
 key folder. You can get the CAcert root certificates from 
 https://www.cacert.org/index.php?id=3, download the PEM formated versions.[2]
 
-12. Combine your certificate, your key, and the CAcert certificate into a single
+- Combine your certificate, your key, and the CAcert certificate into a single
 PKCS#12 container:
 
 ```

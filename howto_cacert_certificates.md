@@ -130,6 +130,7 @@ Footnotes
 ---------
 
 1: You can only enter a name if you have enough points.
+
 2: So how can you check that CAcert is actually CAcert? (After all, cacert.org 
 uses a self-signed certificate?) Check against a third party: The Allianz 
 insurance group lists the certificates they trust at https://rootca.allianz.com/de/secumail_calist.htm.

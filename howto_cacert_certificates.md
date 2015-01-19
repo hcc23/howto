@@ -13,8 +13,17 @@ Check your SSL version and make sure it is current:
 OpenSSL 1.0.1j-fips 15 Oct 2014
 ```
 
+TL;DR
+-----
+
+```
+:~> openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -camellia-256-cbc -outform PEM -out private_key.pem
+:~> openssl req -new -inform PEM -key private_key.pem -outform PEM -out csr.pem
+:~> openssl pkcs12 -export -inkey private_key.pem -in 0123AB.crt -certfile cacert_class1.crt -certfile cacert_class3.crt -out 0123AB.p12
+```
+
     
-Certtificate Creation
+Certificate Creation
 ---------------------
 
 Now on to the actual creation:
@@ -27,17 +36,18 @@ Now on to the actual creation:
 :~/myNewKey> 
 ```
 
-- Generate a 4096 bit long RSA key, encrypt it with AES, and store it in a
+- Generate a 4096 bit long RSA key, encrypt it with Camellia, and store it in a
 PEM formatted file:
 
 ```
-:~/myNewKey> openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -aes-256-ecb -outform PEM -out private_key.pem
+:~/myNewKey> openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:4096 -camellia-256-cbc -outform PEM -out private_key.pem
 Enter PEM pass phrase:
 Verifying - Enter PEM pass phrase:
 :~/myNewKey> 
 ```
 
-- Generate a Certificate Signature Request (CSR):
+- Generate a Certificate Signature Request (CSR)
+(Note: replace <YOUR NAME> and <YOUR EMAIL ADDRESS> accordingly)
 
 ```
 :~/myNewKey> openssl req -new -inform PEM -key private_key.pem -outform PEM -out csr.pem
@@ -78,12 +88,21 @@ The next couple of steps happen on the CAcert website (https://www.cacert.org/in
     
 - Log on to CAcert and go to 'Client Certificates'->'New' (https://www.cacert.org/account.php?id=3)
 
-- Select the email address you enterd in step 3 above and check that the name
-also matches.[1]
+- Select the email address you enterd in step 3 above. 
 
 - Check the 'Show Advanced Options' box and copy-paste your CSR into the text 
 field. (Note: the lines with 'BEGIN CERTIFICATE REQUEST' and 'END CERTIFICATE REQUEST'
 are part of the request and need to be copy-pasted as well!)
+
+If you have enough assurance points to include your name into the certificate,
+also check the following:[1]
+
+- Check that the name with CAcert is the same as the one you entered during
+the CSR creation.
+
+- Check the box that says to sign the certificat with the Class 3 CAcert one.
+
+No matter if you have a name or not, continue as follows:
 
 - Check 'I accept the CAcert Community Agreement (CCA)' box and click 'Next'
 
@@ -106,8 +125,8 @@ the actual certificate information; for this example, let's use '0123AB')
 ```
 
 - Download and store the CAcert class 1 and class 3 root certificates in your 
-key folder. You can get the CAcert root certificates from 
-https://www.cacert.org/index.php?id=3, download the PEM formated versions.[2]
+key folder.[2] You can get the CAcert root certificates from 
+https://www.cacert.org/index.php?id=3, download the PEM formated versions.[3]
 
 - Combine your certificate, your key, and the CAcert certificate into a single
 PKCS#12 container:
@@ -131,8 +150,13 @@ Footnotes
 
 1: You can only enter a name if you have enough points.
 
-2: So how can you check that CAcert is actually CAcert? (After all, cacert.org 
+2: Although theoretically not super necessary, this allows that the complete 
+certificate chain can be stored in the PKCs#12 file. 
+
+3: So how can you check that CAcert is actually CAcert? (After all, cacert.org 
 uses a self-signed certificate?) Check against a third party: The Allianz 
 insurance group lists the certificates they trust at https://rootca.allianz.com/de/secumail_calist.htm.
 The CAcert certificates are listed there, so check that site and compare the SHA1
 fingerprints. (ALL digits!)
+
+
